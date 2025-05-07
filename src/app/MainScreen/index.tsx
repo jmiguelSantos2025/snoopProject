@@ -1,49 +1,73 @@
-import { View, Image, StyleSheet, Text, TouchableOpacity, Platform, KeyboardAvoidingView } from "react-native";
-import { IconButton } from "react-native-paper"; 
-import { useState } from "react";
+import {
+  View,
+  Image,
+  StyleSheet,
+  Platform,
+  KeyboardAvoidingView,
+  ScrollView,
+  TouchableOpacity,
+  Dimensions,
+} from "react-native";
+import { IconButton } from "react-native-paper";
 import { router } from "expo-router";
 
 export default function MainScreen() {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
-      style={styles.container}
+      style={styles.keyboardView}
     >
-      <IconButton
-        icon="menu"
-        size={30}
-        onPress={() => alert("Menu aberto")}
-        iconColor="black"
-        style={styles.menuButton}
-      />
+      <ScrollView contentContainerStyle={styles.container}>
+        <IconButton
+          icon="menu"
+          size={30}
+          onPress={() => alert("Menu aberto")}
+          iconColor="black"
+          style={styles.menuButton}
+        />
 
-      <Image source={require("../../../assets/LoginImage.png")} style={styles.image} />
+        <Image
+          source={require("../../../assets/LoginImage.png")}
+          style={styles.image}
+        />
 
-      <Text style={styles.title}>Bem-vindo</Text>
+        <View style={styles.containerCards}>
+          <TouchableOpacity style={styles.card} onPress={() => router.push("DicasScreen")}>
+            <Image
+              style={styles.cardImage}
+              source={require("../../../assets/Dicas.png")}
+            />
+          </TouchableOpacity>
 
-      <View style={styles.cardsContainer}>
-        <View style={styles.card}>
-          <Text style={styles.cardText}>Câmera</Text>
+          <TouchableOpacity style={styles.card} onPress={() => alert("Registros")}>
+            <Image
+              style={styles.cardImage}
+              source={require("../../../assets/Registros.png")}
+            />
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.card} onPress={() => alert("Câmera")}>
+            <Image
+              style={styles.cardImage}
+              source={require("../../../assets/Camera.png")}
+            />
+          </TouchableOpacity>
         </View>
-        <View style={styles.card}>
-          <Text style={styles.cardText}>Registros</Text>
-        </View>
-        <View style={styles.card}>
-          <Text style={styles.cardText}>Dicas</Text>
-        </View>
-      </View>
+      </ScrollView>
     </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  keyboardView: {
     flex: 1,
-    justifyContent: "flex-start",
-    alignItems: "center",
     backgroundColor: "#F3D3FF",
-    paddingHorizontal: "5%",
-    paddingTop: "10%",
+  },
+  container: {
+    flexGrow: 1,
+    alignItems: "center",
+    paddingTop: 60,
+    paddingBottom: 40,
   },
   menuButton: {
     position: "absolute",
@@ -52,36 +76,25 @@ const styles = StyleSheet.create({
     zIndex: 10,
   },
   image: {
-    height: "40%",
-    width: "50%",
-    aspectRatio: 1,
+    height: 150,
+    width: 150,
     resizeMode: "contain",
-    marginBottom: 10,
-  },
-  title: {
-    fontSize: 28,
-    fontWeight: "bold",
-    color: "#6A1B9A",
     marginBottom: 20,
   },
-  cardsContainer: {
-    width: "100%",
-    justifyContent: "center",
+  containerCards: {
+    height:"50%",
+    width: "90%",
     alignItems: "center",
-    marginTop: 20,
   },
   card: {
-    width: "80%",
-    height: 100,
-    backgroundColor: "#BF78B8",
-    justifyContent: "center",
-    alignItems: "center",
-    marginBottom: 15,
-    borderRadius: 10,
+    height:"40%",
+    width: "100%",
+    aspectRatio: 3, 
+    marginBottom: 20,
   },
-  cardText: {
-    fontSize: 18,
-    color: "white",
-    fontWeight: "bold",
+  cardImage: {
+    width: "100%",
+    height: "100%",
+    resizeMode: "contain",
   },
 });

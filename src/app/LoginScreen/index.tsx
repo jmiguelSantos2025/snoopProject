@@ -1,8 +1,8 @@
 import { View, Image, StyleSheet, Text, TouchableOpacity, Platform, KeyboardAvoidingView } from "react-native";
 import { TextInput, IconButton } from "react-native-paper"; 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { router } from "expo-router";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../../firebaseConfig";
 
 export default function LoginScreen() {
@@ -20,6 +20,18 @@ export default function LoginScreen() {
       alert("Erro ao fazer login: " + error);
     }
   };
+  useEffect(()=>{
+    const usuarioLogado = onAuthStateChanged(auth,(user)=>{
+      if(user){
+        router.replace('MainScreen');
+
+      }else{
+        router.replace('LoginScreen');
+      }
+    });
+    return usuarioLogado;
+
+  }, []);
 
   return (
     <KeyboardAvoidingView
@@ -29,7 +41,7 @@ export default function LoginScreen() {
       <IconButton
               icon="arrow-left"
               size={25}
-              onPress={() => router.back()}
+              onPress={() => router.replace("FirstScreen")}
               iconColor="black"
               style={{ position: "absolute", top: 20, left: 20, zIndex: 10, borderColor: "black", borderWidth:2, }}
             />
