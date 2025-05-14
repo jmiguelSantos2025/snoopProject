@@ -1,5 +1,14 @@
-import { View, Image, StyleSheet, Text, TouchableOpacity, Platform, KeyboardAvoidingView } from "react-native";
-import { TextInput, IconButton } from "react-native-paper"; 
+import {
+  View,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  Platform,
+  KeyboardAvoidingView,
+  ActivityIndicator,
+} from "react-native";
+import { TextInput, IconButton } from "react-native-paper";
 import { useEffect, useState } from "react";
 import { router } from "expo-router";
 import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
@@ -9,29 +18,39 @@ export default function LoginScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isVisible, setIsVisible] = useState(true);
+  const [loading, setLoading] = useState(true);
+
+  // Verifica se o usuário já está logado ao entrar na tela
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        router.replace("/MainScreen");
+      } else {
+        setLoading(false); // Libera o formulário se não estiver logado
+      }
+    });
+
+    return unsubscribe;
+  }, []);
 
   const handleSignIn = async () => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       setEmail("");
       setPassword("");
-      router.push("/MainScreen");
+      router.replace("/MainScreen");
     } catch (error) {
-      alert("Erro ao fazer login: " + error);
+      alert("Erro ao fazer login: ");
     }
   };
-  useEffect(()=>{
-    const usuarioLogado = onAuthStateChanged(auth,(user)=>{
-      if(user){
-        router.replace('MainScreen');
 
-      }else{
-        router.replace('LoginScreen');
-      }
-    });
-    return usuarioLogado;
-
-  }, []);
+  if (loading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#6A1B9A" />
+      </View>
+    );
+  }
 
   return (
     <KeyboardAvoidingView
@@ -39,12 +58,19 @@ export default function LoginScreen() {
       style={styles.container}
     >
       <IconButton
-              icon="arrow-left"
-              size={25}
-              onPress={() => router.replace("FirstScreen")}
-              iconColor="black"
-              style={{ position: "absolute", top: 20, left: 20, zIndex: 10, borderColor: "black", borderWidth:2, }}
-            />
+        icon="arrow-left"
+        size={25}
+        onPress={() => router.replace("FirstScreen")}
+        iconColor="black"
+        style={{
+          position: "absolute",
+          top: 20,
+          left: 20,
+          zIndex: 10,
+          borderColor: "black",
+          borderWidth: 2,
+        }}
+      />
 
       <Image source={require("../../../assets/LoginImage.png")} style={styles.image} />
 
@@ -86,14 +112,15 @@ export default function LoginScreen() {
           }}
         />
 
-        <TouchableOpacity onPress={() => router.push("/RescuePasswordSetEmail")}>
-          <Text onPress={()=>router.push('ResetPasswordScreen')} style={styles.forgotPassword}>Esqueceu a senha?</Text>
+        <TouchableOpacity onPress={() => router.push("ResetPasswordScreen")}>
+          <Text style={styles.forgotPassword}>Esqueceu a senha?</Text>
         </TouchableOpacity>
       </View>
 
       <TouchableOpacity style={styles.loginButton} onPress={handleSignIn}>
-        <Text style={styles.buttonText}>Cadastrar</Text>
+        <Text style={styles.buttonText}>Entrar</Text>
       </TouchableOpacity>
+
       <View style={{ marginTop: 10 }}>
         <Text>
           Ainda não possui uma conta?{" "}
@@ -102,7 +129,7 @@ export default function LoginScreen() {
           </Text>
         </Text>
       </View>
-        </KeyboardAvoidingView>
+    </KeyboardAvoidingView>
   );
 }
 
@@ -115,10 +142,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: "5%",
     paddingTop: "10%",
   },
-  backButton: {
-    position: "absolute",
-    top: 40, 
-    left: 10, 
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#F3D3FF",
   },
   image: {
     height: "40%",

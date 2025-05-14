@@ -4,13 +4,13 @@ import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 const {width, height} = Dimensions.get("window");
 
-export default function DicasDeCalorScreen() {
+export default function Colica() {
   return (
     <View style={styles.container}>
     
         <View style={styles.header}>
             <ImageBackground 
-                source={require('../../../assets/HeaderCalorBebe.png')}
+                source={require('../../../assets/HeaderColica.png')}
                 style={styles.headerImage}
                 resizeMode="cover"
             />
@@ -20,16 +20,18 @@ export default function DicasDeCalorScreen() {
         <View style={styles.secondPierce}>
            
             <Image 
-                source={require('../../../assets/CalorBebeImage.png')}
+                source={require('../../../assets/ColicaImage.png')}
                 style={styles.mainImage}
                 resizeMode="contain"
             />
             
             
+            <TouchableOpacity style={styles.leftIcon} onPress={()=> router.push("CortarUnha")}>
+                <Ionicons name="arrow-back" size={32} color="white" />
+            </TouchableOpacity>
             
             
-            
-            <TouchableOpacity style={styles.rightIcon} onPress={()=>router.push("SonoDeBebe")}>
+            <TouchableOpacity style={styles.rightIcon} onPress={()=>router.push("BolsaDeBebe")}>
                 <Ionicons name="arrow-forward" size={32} color="white" />
             </TouchableOpacity>
         </View>
@@ -79,7 +81,7 @@ const styles = StyleSheet.create({
         right: 10,
         top: '50%',
         marginTop: -16, 
-        zIndex: 10,
+        zIndex: 1,
         backgroundColor: 'rgba(0,0,0,0.3)',
         borderRadius: 20,
         padding: 8,

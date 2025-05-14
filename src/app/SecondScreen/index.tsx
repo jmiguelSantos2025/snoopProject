@@ -6,7 +6,7 @@ export default function SecondScreen() {
   useEffect(() => {
     const timer = setTimeout(() => {
       router.replace('/LoginScreen');
-    }, 4000);
+    }, 2000);
 
     return () => clearTimeout(timer);
   }, []);

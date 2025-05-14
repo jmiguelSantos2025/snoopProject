@@ -13,13 +13,13 @@ export default function Layout() {
 
   return (
     <Stack screenOptions={{ headerShown: false }}> 
-      <Stack.Screen name="TransitionScreenOne/index" /> 
-      <Stack.Screen name="TransitionScreenThird/index" />
+      <Stack.Screen name="DicasScreen/index" /> 
+      <Stack.Screen name="FirstScreen/index" />
       <Stack.Screen name="LoginScreen/index" />
-      <Stack.Screen name="NewUserScreen/index" />
-      <Stack.Screen name="RescuePasswordSetEmail/index"/>
-      <Stack.Screen name="PasswordRescueScreen/index"/>
-      <Stack.Screen name="(tabs)"/>
+      <Stack.Screen name="MainScreen/index" />
+      <Stack.Screen name="NewUserScreen/index"/>
+      <Stack.Screen name="ResetPassword/index"/>
+      <Stack.Screen name="SecondScreen"/>
     </Stack>
   );
 }
